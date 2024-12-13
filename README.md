@@ -151,4 +151,96 @@ The `ps` command is used to display information about active processes.
   ps aux | grep <process_name>
   ```
 
+## 7. A General Guide to Using TLP for Power Management on Ubuntu
+
+TLP is a powerful tool designed to optimize power management on Linux systems. Here's a brief guide to getting started with TLP, configuring it, and understanding its capabilities:
+
+---
+
+#### 1. **Installing TLP**
+TLP can be installed from the default Ubuntu repositories:
+```bash
+sudo apt install tlp
+```
+To ensure compatibility with your hardware, also install any vendor-specific drivers or add-ons:
+```bash
+sudo apt install tlp-rdw
+```
+
+#### 2. **Starting TLP**
+Once installed, TLP is enabled by default. You can start it manually if needed:
+```bash
+sudo tlp start
+```
+
+---
+
+#### 3. **Configuring TLP**
+The configuration file for TLP is located at `/etc/tlp.conf`. Edit this file to customize power management settings:
+```bash
+sudo nano /etc/tlp.conf
+```
+
+Key options to configure:
+- **Charge thresholds** for battery health:
+  ```bash
+  START_CHARGE_THRESH_BAT0=40
+  STOP_CHARGE_THRESH_BAT0=80
+  ```
+  This ensures the battery charges only between 40% and 80%.
+
+- Save and apply changes by restarting TLP:
+  ```bash
+  sudo tlp start
+  ```
+
+---
+
+#### 4. **Checking TLP Status**
+To view the current status of TLP and the system's power management settings:
+```bash
+sudo tlp-stat
+```
+Key sections in the output:
+- **Driver usage**: Confirms if charge threshold drivers (e.g., `natacpi`) are active.
+- **Battery status**: Displays charge levels, capacity, and thresholds.
+- **CPU settings**: Shows power-saving states for the CPU.
+
+---
+
+#### 5. **Charge Thresholds**
+Charge thresholds are particularly useful for maintaining battery health. Ensure your hardware supports this feature by checking the **Driver usage** section in `tlp-stat`.
+
+Example:
+```bash
+/sys/class/power_supply/BAT0/charge_control_end_threshold = 80 [%]
+```
+This means the battery will stop charging when it reaches 80%.
+
+---
+
+#### 6. **Important Commands**
+- **Check battery status**:
+  ```bash
+  sudo tlp-stat -b
+  ```
+- **View power settings**:
+  ```bash
+  sudo tlp-stat -c
+  ```
+- **Restart TLP after changes**:
+  ```bash
+  sudo tlp start
+  ```
+
+---
+
+#### 7. **Things to Keep in Mind**
+- **Hardware Compatibility**: Not all laptops support advanced TLP features like charge thresholds. Check the **Driver usage** section in `tlp-stat` for compatibility.
+- **Battery Health**: Use charge thresholds (e.g., 40–80%) to prolong battery life.
+- **Custom Configurations**: Avoid unnecessary edits to `tlp.conf`. Use the default settings unless specific tweaks are required.
+
+---
+
+With TLP properly configured, you can effectively manage your system's power usage and extend your laptop's battery life.
 
